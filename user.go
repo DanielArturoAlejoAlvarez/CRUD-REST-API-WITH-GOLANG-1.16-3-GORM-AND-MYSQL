@@ -11,3 +11,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	DB.Find(&users)
 	json.NewEncoder(w).Encode(users)
 }
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+
+}
