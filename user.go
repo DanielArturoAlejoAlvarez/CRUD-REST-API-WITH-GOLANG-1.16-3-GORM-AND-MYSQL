@@ -39,3 +39,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	DB.Save(&user)
 	json.NewEncoder(w).Encode(user)
 }
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+
+}
