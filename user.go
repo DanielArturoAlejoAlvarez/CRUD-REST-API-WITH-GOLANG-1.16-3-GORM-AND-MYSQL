@@ -29,3 +29,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	DB.Create(&user)
 	json.NewEncoder(w).Encode(user)
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+
+}
