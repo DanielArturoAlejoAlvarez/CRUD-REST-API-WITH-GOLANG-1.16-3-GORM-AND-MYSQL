@@ -21,3 +21,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	DB.First(&user, params["id"])
 	json.NewEncoder(w).Encode(user)
 }
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+
+}
