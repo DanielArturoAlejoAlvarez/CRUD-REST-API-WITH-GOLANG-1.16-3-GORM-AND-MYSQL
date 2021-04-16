@@ -33,7 +33,105 @@ Follow the following steps and you're good to go! Important:
 
 ```go
 ...
-..
+var DB *gorm.DB
+
+var err error
+
+var DNS = "root:password@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+
+func InitialMigration() {
+	DB, err = gorm.Open(mysql.Open(DNS), &gorm.Config{})
+	if err != nil {
+		fmt.Println(err.Error())
+		panic("Can't connect to DB!")
+	}
+
+	DB.AutoMigrate(&User{})
+}
+...
+```
+
+### Routes
+
+```go
+...
+func initializeRouter() {
+	r := mux.NewRouter()
+
+	r.HandleFunc("api/users", GetUsers).Methods("GET")
+	r.HandleFunc("api/users/{id}", GetUser).Methods("GET")
+	r.HandleFunc("api/users", CreateUser).Methods("POST")
+	r.HandleFunc("api/users/{id}", UpdateUser).Methods("PUT")
+	r.HandleFunc("api/users/{id}", DeleteUser).Methods("DELETE")
+
+	log.Fatal(http.ListenAndServe(":9000", r))
+}
+...
+```
+
+### Controllers
+
+```go
+...
+func GetUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var users []User
+	DB.Find(&users)
+	json.NewEncoder(w).Encode(users)
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	var user User
+	DB.First(&user, params["id"])
+	json.NewEncoder(w).Encode(user)
+}
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var user User
+	json.NewDecoder(r.Body).Decode(&user)
+	DB.Create(&user)
+	json.NewEncoder(w).Encode(user)
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	var user User
+	DB.First(&user, params["id"])
+	json.NewDecoder(r.Body).Decode(&user)
+	DB.Save(&user)
+	json.NewEncoder(w).Encode(user)
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	var user User
+	DB.Delete(&user, params["id"])
+	json.NewEncoder(w).Encode(user)
+}
+...
+```
+
+### Models
+
+```go 
+...
+type User struct {
+	gorm.Model
+	DisplayName string `json:"displayname"`
+	Email       string `json:"email"`
+	Username    string `json:"username"`
+	Phone       string `json:"phone"`
+	Address     string `json:"address"`
+	Age         int    `json:"age"`
+	Avatar      string `json:"avatar"`
+	Flag        bool   `json:"flag"`
+}
+...
 ```
 
 ## Contributing
