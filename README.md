@@ -21,6 +21,10 @@ Using Postman, Insomnia, Talend API Tester, etc.
 ```html
 $ git clone https://github.com/DanielArturoAlejoAlvarez/CRUD-REST-API-WITH-GOLANG-1.16-3-GORM-AND-MYSQL.git
 [NAME APP]
+
+$ go build
+
+$ ./[name-app] [ENTER]
 ```
 
 Follow the following steps and you're good to go! Important:
