@@ -30,5 +30,5 @@ func initializeRouter() {
 				"HEAD",
 				"OPTIONS"}),
 			handlers.AllowedOrigins([]string{"*"}))(r)))
-	//log.Fatal(http.ListenAndServe(":9000", r))
+
 }
