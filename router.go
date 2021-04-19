@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -16,5 +17,18 @@ func initializeRouter() {
 	r.HandleFunc("/api/users/{id}", UpdateUser).Methods("PUT")
 	r.HandleFunc("/api/users/{id}", DeleteUser).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":9000", r))
+	log.Fatal(http.ListenAndServe(":9000",
+		handlers.CORS(handlers.AllowedHeaders([]string{
+			"X-Requested-With",
+			"Content-Type",
+			"Authorization"}),
+			handlers.AllowedMethods([]string{
+				"GET",
+				"POST",
+				"PUT",
+				"DELETE",
+				"HEAD",
+				"OPTIONS"}),
+			handlers.AllowedOrigins([]string{"*"}))(r)))
+	//log.Fatal(http.ListenAndServe(":9000", r))
 }
