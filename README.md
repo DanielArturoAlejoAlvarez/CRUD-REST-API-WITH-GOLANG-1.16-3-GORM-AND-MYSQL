@@ -12,6 +12,8 @@ Using Go 1.16 preferably.
 
 Using MySQL preferably.
 
+!EYE Configure DB info through the create of file .env
+
 ## Apps
 
 Using Postman, Insomnia, Talend API Tester, etc.
